@@ -1,0 +1,14 @@
+Gestion affichage:
+
+1) recyclerView and gridLayout
+-gridLayout
+-modifier l'exo 
+2)Modifier exo avec les arrays adapter 
+
+
+3) Nouvelle activiter 
+affichage
+
+4) lier 
+
+sens
