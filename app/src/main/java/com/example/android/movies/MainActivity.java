@@ -1,15 +1,16 @@
 package com.example.android.movies;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.movies.utilities.NetworkUtils;
 
@@ -22,41 +23,61 @@ import java.util.List;
 
 import static com.example.android.movies.utilities.MoviesJsonUtils.getSimpleMovieFromJson;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MovieAdapter.ListItemClickListener
+{
 
 
-    public String[][] data;
+    private RecyclerView recyclerView;
+    private List<Movie> movies;
+    Toast toast;
+    private String[][] data;
+    private Boolean isPopular;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+         toast = new Toast(getApplicationContext());
 
-        movieQuery();
+        isPopular=true;
+        movieQuery(isPopular);
+
+       recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new GridLayoutManager(this,2));
+
+
+
+
+
+
+
+
     }
 
 
-    private void movieQuery() {
-        URL theMovieDBUrl = NetworkUtils.buildUrl();
+
+    public void changeSorting(boolean isPopular)
+    {
+        movieQuery(isPopular);
+
+
+    }
+
+    /**
+     * Load json data from Server
+     */
+    private void movieQuery(boolean isPopular) {
+        URL theMovieDBUrl = NetworkUtils.buildUrl(isPopular);
         new theMovieDbQueryTask().execute(theMovieDBUrl);
     }
 
-    // COMPLETED (1) Create a class called GithubQueryTask that extends AsyncTask<URL, Void, String>
+
         public class theMovieDbQueryTask extends AsyncTask<URL, Void, String> {
 
 
-        // COMPLETED (2) Override the doInBackground method to perform the query. Return the results. (Hint: You've already written the code to perform the query)
-        @Override
+         @Override
         protected String doInBackground(URL... params)
         {
             URL searchUrl = params[0];
@@ -69,13 +90,13 @@ public class MainActivity extends AppCompatActivity {
             return theMoviePopularResults;
         }
 
-        // COMPLETED (3) Override onPostExecute to display the results in the TextView
         @Override
         protected void onPostExecute(String theMoviePopularResults) {
             if (theMoviePopularResults != null && !theMoviePopularResults.equals("")) {
                 try {
                     data = getSimpleMovieFromJson(theMoviePopularResults);
-                    showData(data);
+                    movies = generateMovie(data);
+                    setRecyclerAdapter(movies);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -85,28 +106,12 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
+    /**
+     * Generate movie
+     * @param moviesObject
+     * @return
+     */
     public List<Movie> generateMovie(String[][] moviesObject)
     {
         List<Movie> movies = new ArrayList<>();
@@ -118,13 +123,93 @@ public class MainActivity extends AppCompatActivity {
         return movies;
     }
 
-    public void showData(String[][] moviesObject)
+
+    /**
+     * Set recycler adapter
+     * @param movies
+     */
+    public void setRecyclerAdapter(List<Movie> movies)
     {
-        List<Movie> movies = generateMovie(moviesObject);
+
+
+        recyclerView.setAdapter(new MovieAdapter(movies,this));
         Log.d("MainActivity","**gogo powa ranga**");
-        for(Movie m:movies)
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //ajoute les entrées de menu_test à l'ActionBar
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    /**
+     * Method to manage popular list
+     */
+    private void sortMostPopular(){
+        if(!isPopular)
         {
-            Log.d("MainActivity",m.getOriginalTitle());
+            isPopular=true;
+            changeSorting(isPopular);
         }
+      //  toast.makeText(this,R.string.action_popular,Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * Method to manage rated list
+     */
+    private void sortMostRated(){
+
+        if(isPopular)
+        {
+            isPopular=false;
+            changeSorting(isPopular);
+        }
+        //toast.makeText(this,R.string.action_rated,Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     *  Event management of itemps of menu
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_popular:
+                sortMostPopular();
+                return true;
+            case R.id.action_rated:
+                sortMostRated();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Get the index of items then send related movie to details
+     * @param clickedItemIndex
+     */
+    @Override
+    public void onListItemClick(int clickedItemIndex) {
+
+
+
+        goToDetails(clickedItemIndex);
+
+    }
+
+    /**
+     * Open new activity with related movie
+     */
+    public  void goToDetails(int movieIndex)
+    {
+        Movie movie = movies.get(movieIndex);
+        Log.d("MainActivity",movie.getOriginalTitle());
+        Intent intent = new Intent(this,DetailsActivity.class);
+        intent.putExtra("msg",movie);
+        startActivity(intent);
     }
 }

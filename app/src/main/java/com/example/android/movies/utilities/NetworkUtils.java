@@ -17,6 +17,10 @@ public class NetworkUtils {
 
     final static String BASE_URL_POPULAR=
             "http://api.themoviedb.org/3/movie/popular";
+
+    final static String BASE_URL_TOPRATED=
+            "http://api.themoviedb.org/3/movie/movie/top_rated";
+
     final static String APP_KEY_PARAM = "api_key";
 
 
@@ -25,8 +29,8 @@ public class NetworkUtils {
     public final static String IMAGE_SMALL_SIZE = "w185";
 
 
-    public static URL buildUrl() {
-        Uri builtUri = Uri.parse(BASE_URL_POPULAR).buildUpon()
+    public static URL buildUrl(boolean isPopular) {
+        Uri builtUri = Uri.parse(isPopular?BASE_URL_POPULAR:BASE_URL_TOPRATED).buildUpon()
                 .appendQueryParameter(APP_KEY_PARAM, "4b6de28efdf9617b837f66cc9b7dd021")
                 .build();
 

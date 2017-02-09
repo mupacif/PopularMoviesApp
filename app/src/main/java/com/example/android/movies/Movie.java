@@ -1,10 +1,12 @@
 package com.example.android.movies;
 
+import java.io.Serializable;
+
 /**
  * Created by mupac_000 on 08-02-17.
  */
 
-public class Movie {
+public class Movie implements Serializable {
     private String originalTitle;
     private String thumbnail;
     private String synopsis;
@@ -14,7 +16,7 @@ public class Movie {
     public Movie(String originalTitle,String thumbnail, String synopsis, String rating, String realiseDate)
     {
         this.originalTitle = originalTitle;
-        this.thumbnail = thumbnail;
+        this.thumbnail = "http://image.tmdb.org/t/p/w185/"+thumbnail;
         this.synopsis = synopsis;
         this.rating = Double.valueOf(rating);
         this.realiseDate = realiseDate;
