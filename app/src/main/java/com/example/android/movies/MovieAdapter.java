@@ -1,52 +1,62 @@
 package com.example.android.movies;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 
 import com.example.android.movies.Movie;
 
 import java.util.List;
 
 
-public class MovieAdapter extends ArrayAdapter<Movie> {
+public class MovieAdapter extends ecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
-    public MovieAdapter(Context context, List<Movie> movies)
+    private List<Movie> movies;
+
+
+    public MovieAdapter( List<Movie> movies)
     {
-        super(context,0,movies);
+        this.movies = movies;
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
 
-        if(convertView == null){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.row_tweet,parent, false);
-        }
-
-        TweetViewHolder viewHolder = (TweetViewHolder) convertView.getTag();
-        if(viewHolder == null){
-            viewHolder = new TweetViewHolder();
-            viewHolder.pseudo = (TextView) convertView.findViewById(R.id.pseudo);
-            viewHolder.text = (TextView) convertView.findViewById(R.id.text);
-            viewHolder.avatar = (ImageView) convertView.findViewById(R.id.avatar);
-            convertView.setTag(viewHolder);
-        }
-
-        //getItem(position) va récupérer l'item [position] de la List<Tweet> tweets
-        Tweet tweet = getItem(position);
-        viewHolder.pseudo.setText(tweet.getPseudo());
-        viewHolder.text.setText(tweet.getText());
-        viewHolder.avatar.setImageDrawable(new ColorDrawable(tweet.getColor()));
-
-        return convertView;
+    /**
+     * create viewHolders and inflate view from
+     * @param viewGroup
+     * @param itemType
+     * @return
+     */
+    public MovieViewHolder onCreateViewHolder(ViewGroup viewGroup, int itemType)
+    {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.Layout.cell_cards,viewGroup,false);
+        return new MovieViewHolder(view);
     }
+  
 
-    private class TweetViewHolder{
-        public TextView pseudo;
-        public TextView text;
-        public ImageView avatar;
+
+    //ViewHolder class
+    public class MovieViewHolder extends RecyclerView.ViewHolder{
+        public ImageView moviePoster;
+
+            //coresponding to one view
+            public MovieViewHolder(View itemView)
+            {
+             super(itemView);
+
+
+                moviePoster=(ImageView) itemView.findViewById(R.id.image);
+            }
+
+            //to fill up according to one object
+            public void bind(Movie movie)
+            {
+                Picasso.with(moviePoster.getContext()).load(movie.getThumbnail()).centerCrop().fit().into(moviePoster);
+
+            }
 
     }
 
