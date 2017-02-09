@@ -17,11 +17,15 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.example.android.movies.utilities.MoviesJsonUtils.getSimpleMovieFromJson;
 
 public class MainActivity extends AppCompatActivity {
 
+
+    public String[][] data;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,11 +52,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // COMPLETED (1) Create a class called GithubQueryTask that extends AsyncTask<URL, Void, String>
-    public class theMovieDbQueryTask extends AsyncTask<URL, Void, String> {
+        public class theMovieDbQueryTask extends AsyncTask<URL, Void, String> {
+
 
         // COMPLETED (2) Override the doInBackground method to perform the query. Return the results. (Hint: You've already written the code to perform the query)
         @Override
-        protected String doInBackground(URL... params) {
+        protected String doInBackground(URL... params)
+        {
             URL searchUrl = params[0];
             String theMoviePopularResults = null;
             try {
@@ -68,9 +74,8 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String theMoviePopularResults) {
             if (theMoviePopularResults != null && !theMoviePopularResults.equals("")) {
                 try {
-                    String[] data = getSimpleMovieFromJson(theMoviePopularResults);
-                    for(String i:data)
-                        Log.d("MainActivity",i);
+                    data = getSimpleMovieFromJson(theMoviePopularResults);
+                    showData(data);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -100,5 +105,26 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public List<Movie> generateMovie(String[][] moviesObject)
+    {
+        List<Movie> movies = new ArrayList<>();
+        for(String[] movie:moviesObject)
+        {
+           Movie m = new Movie(movie[0],movie[1],movie[2],movie[3],movie[4]);
+            movies.add(m);
+        }
+        return movies;
+    }
+
+    public void showData(String[][] moviesObject)
+    {
+        List<Movie> movies = generateMovie(moviesObject);
+        Log.d("MainActivity","**gogo powa ranga**");
+        for(Movie m:movies)
+        {
+            Log.d("MainActivity",m.getOriginalTitle());
+        }
     }
 }

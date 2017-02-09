@@ -27,7 +27,7 @@ public class NetworkUtils {
 
     public static URL buildUrl() {
         Uri builtUri = Uri.parse(BASE_URL_POPULAR).buildUpon()
-                .appendQueryParameter(APP_KEY_PARAM, "")
+                .appendQueryParameter(APP_KEY_PARAM, "4b6de28efdf9617b837f66cc9b7dd021")
                 .build();
 
         URL url = null;

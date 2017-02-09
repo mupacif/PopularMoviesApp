@@ -12,19 +12,23 @@ public final class MoviesJsonUtils {
 
     private static final String GLOBAL_WRAPPER = "results";
 
-    public static String[] getSimpleMovieFromJson(String jsonStr) throws JSONException {
+    public static String[][] getSimpleMovieFromJson(String jsonStr) throws JSONException {
 
-        String[] parsedMovieData;
+        String[][] parsedMovieData;
         JSONObject jsonData = new JSONObject(jsonStr);
 
         JSONArray moviesArray = jsonData.getJSONArray(GLOBAL_WRAPPER);
-        parsedMovieData = new String[moviesArray.length()];
+        parsedMovieData = new String[moviesArray.length()][5];
 
-        for (int i = 0; i < moviesArray.length(); i++) {
+        for (int i = 0; i < moviesArray.length(); i++)
+        {
             JSONObject movieForecast = moviesArray.getJSONObject(i);
-
-            parsedMovieData[i] = movieForecast.getString("original_title");
-
+            parsedMovieData[i] =
+                    new String[]{movieForecast.getString("original_title"),
+                                 movieForecast.getString("poster_path"),
+                                 movieForecast.getString("overview"),
+                                 movieForecast.getString("vote_average"),
+                                 movieForecast.getString("release_date")};
         }
         return parsedMovieData;
     }
