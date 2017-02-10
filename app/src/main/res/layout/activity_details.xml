@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_details"
@@ -6,6 +10,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.android.movies.DetailsActivity">
+
 
     <ImageView
         android:id="@+id/details_image"
@@ -21,7 +26,7 @@
             android:id="@+id/details_TitleLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Title:"/>
+            android:text="@string/detail_title"/>
     <TextView
         android:id="@+id/details_Title"
         android:layout_height="wrap_content"
@@ -41,12 +46,12 @@
             android:id="@+id/details_releaseDateLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Release Date:"/>
+            android:text="@string/detail_releaseDate"/>
     <TextView
         android:id="@+id/details_releaseDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="fdfsdf" />
+        />
     </LinearLayout>
 
 
@@ -59,7 +64,7 @@
             android:id="@+id/details_avgVoteLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Average vote:"/>
+            android:text="@string/detail_averageVote"/>
         <TextView
             android:id="@+id/details_avgVote"
             android:layout_width="wrap_content"
@@ -74,7 +79,7 @@
             android:id="@+id/details_synopsisLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="synopsis"/>
+            android:text="@string/detail_synopsis"/>
 
 
         <TextView
@@ -85,3 +90,4 @@
 
 
 </LinearLayout>
+</ScrollView>

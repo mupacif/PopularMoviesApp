@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">Movies</string>
     <string name="action_settings">Settings</string>
-    <string name="action_popular">most popular,</string>
+    <string name="action_popular">most popular</string>
     <string name="action_rated">highest rated</string>
+
+
+    <string name="detail_synopsis"><u>synopsis</u></string>
+    <string name="detail_title">Title:</string>
+    <string name="detail_releaseDate">Release Date:</string>
+    <string name="detail_averageVote">Average vote:</string>
+
 </resources>
