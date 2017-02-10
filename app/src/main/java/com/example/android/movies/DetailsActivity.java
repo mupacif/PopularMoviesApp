@@ -34,7 +34,7 @@ public class DetailsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Movie movie = (Movie)intent.getSerializableExtra("movie");
-        Log.d(TAG,movie.getOriginalTitle());
+        inflateMovie(movie);
     }
 
     public void inflateMovie(Movie movie)

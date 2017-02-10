@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         Movie movie = movies.get(movieIndex);
         Log.d("MainActivity",movie.getOriginalTitle());
         Intent intent = new Intent(this,DetailsActivity.class);
-        intent.putExtra("msg",movie);
+        intent.putExtra("movie",movie);
         startActivity(intent);
     }
 }
