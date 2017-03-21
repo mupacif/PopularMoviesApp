@@ -3,10 +3,10 @@ package com.example.android.movies;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.android.movies.domain.Movie;
 import com.squareup.picasso.Picasso;
 
 public class DetailsActivity extends AppCompatActivity {

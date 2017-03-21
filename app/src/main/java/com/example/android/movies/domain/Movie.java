@@ -1,4 +1,4 @@
-package com.example.android.movies;
+package com.example.android.movies.domain;
 
 import java.io.Serializable;
 

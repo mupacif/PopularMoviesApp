@@ -9,9 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.movies.domain.Movie;
 import com.example.android.movies.utilities.NetworkUtils;
 
 import org.json.JSONException;
@@ -46,12 +46,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
 
        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this,2));
-
-
-
-
-
-
 
 
     }
