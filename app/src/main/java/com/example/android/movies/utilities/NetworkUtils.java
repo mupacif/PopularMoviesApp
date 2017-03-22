@@ -57,6 +57,24 @@ public class NetworkUtils {
         return url;
     }
 
+    public static URL buildSmallImageUrl(String pathToImage)
+    {
+        Uri builtUri = Uri.parse(IMAGE_BASE_URL).buildUpon()
+                .appendPath(IMAGE_SMALL_SIZE)
+                .appendPath(pathToImage)
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        Log.i("Network",url.toString());
+        return url;
+    }
+
     /**
      * build a trailes url based on movie id
      * @param id of movie

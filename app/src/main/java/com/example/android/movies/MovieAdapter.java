@@ -12,6 +12,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import static com.example.android.movies.utilities.NetworkUtils.buildSmallImageUrl;
+
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
@@ -86,7 +88,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             //to fill up according to one object
             public void bind(Movie movie)
             {
-                Picasso.with(moviePoster.getContext()).load(movie.getThumbnail()).centerCrop().fit().into(moviePoster);
+                Log.i("Adapter", movie.toString());
+                Picasso.with(moviePoster.getContext()).load(buildSmallImageUrl(movie.getPosterPath()).toString()).centerCrop().fit().into(moviePoster);
 
             }
 

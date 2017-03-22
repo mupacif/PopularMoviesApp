@@ -17,8 +17,10 @@ import com.example.android.movies.utilities.NetworkUtils;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.example.android.movies.utilities.MoviesJsonUtils.getSimpleMovieFromJson;
@@ -64,58 +66,25 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
      */
     private void movieQuery(boolean isPopular) {
         URL theMovieDBUrl = NetworkUtils.buildUrl(isPopular);
-        new theMovieDbQueryTask().execute(theMovieDBUrl);
-    }
-
-
-        public class theMovieDbQueryTask extends AsyncTask<URL, Void, String> {
-
-
-         @Override
-        protected String doInBackground(URL... params)
-        {
-            URL searchUrl = params[0];
-            String theMoviePopularResults = null;
-            try {
-                theMoviePopularResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return theMoviePopularResults;
-        }
-
-        @Override
-        protected void onPostExecute(String theMoviePopularResults) {
-            if (theMoviePopularResults != null && !theMoviePopularResults.equals("")) {
+        MovieDbAsyncTaskLoader asyncLoader = new MovieDbAsyncTaskLoader();
+        asyncLoader.setCallback(new MovieDbAsyncTaskLoader.AsyncTaskCallback() {
+            @Override
+            public void getJson(String jsonData) {
                 try {
-                    data = getSimpleMovieFromJson(theMoviePopularResults);
-                    movies = generateMovie(data);
+                     movies = Arrays.asList(getSimpleMovieFromJson(jsonData));
                     setRecyclerAdapter(movies);
-
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Log.d("MainActivity","error fatale");
                 }
-                //Log.i("MainActivity",theMoviePopularResults);
+
             }
-        }
+        });
+        asyncLoader.execute(theMovieDBUrl);
     }
 
-    /**
-     * Generate movie
-     * @param moviesObject
-     * @return
-     */
-    public List<Movie> generateMovie(String[][] moviesObject)
-    {
-        List<Movie> movies = new ArrayList<>();
-        for(String[] movie:moviesObject)
-        {
-           Movie m = new Movie(movie[0],movie[1],movie[2],movie[3],movie[4]);
-            movies.add(m);
-        }
-        return movies;
-    }
+
+
+
 
 
     /**

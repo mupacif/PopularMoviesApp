@@ -9,6 +9,8 @@ import android.widget.TextView;
 import com.example.android.movies.domain.Movie;
 import com.squareup.picasso.Picasso;
 
+import static com.example.android.movies.utilities.NetworkUtils.buildSmallImageUrl;
+
 public class DetailsActivity extends AppCompatActivity {
 
     final  String TAG = this.getClass().getName();
@@ -40,9 +42,9 @@ public class DetailsActivity extends AppCompatActivity {
     public void inflateMovie(Movie movie)
     {
         title.setText(movie.getOriginalTitle());
-        releaseDate.setText(movie.getRealiseDate());
-        avgVote.setText(String.valueOf(movie.getRating()));
-        synopsis.setText(movie.getSynopsis());
-        Picasso.with(poster.getContext()).load(movie.getThumbnail()).centerCrop().fit().into(poster);
+        releaseDate.setText(movie.getReleaseDate());
+        avgVote.setText(String.valueOf(movie.getVoteAverage()));
+        synopsis.setText(movie.getOverview());
+        Picasso.with(poster.getContext()).load(buildSmallImageUrl(movie.getPosterPath()).toString()).centerCrop().fit().into(poster);
     }
 }

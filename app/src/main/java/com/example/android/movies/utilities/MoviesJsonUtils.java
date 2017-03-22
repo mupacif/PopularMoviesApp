@@ -1,5 +1,10 @@
 package com.example.android.movies.utilities;
 
+import android.util.Log;
+
+import com.example.android.movies.domain.Movie;
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -7,14 +12,19 @@ import org.json.JSONObject;
 
 public final class MoviesJsonUtils {
 
-    private static final String GLOBAL_WRAPPER = "results";
+    private static final String JSON_GLOBAL_WRAPPER = "results";
 
-    public static String[][] getSimpleMovieFromJson(String jsonStr) throws JSONException {
+    public static Movie[] getSimpleMovieFromJson(String jsonStr) throws JSONException {
 
         String[][] parsedMovieData;
         JSONObject jsonData = new JSONObject(jsonStr);
+        String resultJson = jsonData.getString(JSON_GLOBAL_WRAPPER);
 
-        JSONArray moviesArray = jsonData.getJSONArray(GLOBAL_WRAPPER);
+        Log.i("MovieJsonUtils", resultJson);
+        Gson gson = new Gson();
+        Movie[] movies = gson.fromJson(resultJson,Movie[].class);
+
+       /* JSONArray moviesArray = jsonData.getJSONArray(JSON_GLOBAL_WRAPPER);
         parsedMovieData = new String[moviesArray.length()][5];
 
         for (int i = 0; i < moviesArray.length(); i++)
@@ -26,8 +36,8 @@ public final class MoviesJsonUtils {
                                  movieForecast.getString("overview"),
                                  movieForecast.getString("vote_average"),
                                  movieForecast.getString("release_date")};
-        }
-        return parsedMovieData;
+        }*/
+        return movies;
     }
 
 

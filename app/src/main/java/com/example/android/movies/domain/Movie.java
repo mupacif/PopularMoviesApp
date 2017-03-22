@@ -2,48 +2,73 @@ package com.example.android.movies.domain;
 
 import java.io.Serializable;
 
-/**
- * Created by mupac_000 on 08-02-17.
- */
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 public class Movie implements Serializable {
+    private String posterPath;
+    private boolean adult;
+    private String overview;
+    private String releaseDate;
+    private List<Integer> genreIds = null;
+    private int id;
     private String originalTitle;
-    private String thumbnail;
-    private String synopsis;
-    private double rating;
-    private String realiseDate;
+    private String originalLanguage;
+    private String title;
+    private String backdropPath;
+    private double popularity;
+    private int voteCount;
+    private boolean video;
+    private double voteAverage;
 
-    public Movie(String originalTitle,String thumbnail, String synopsis, String rating, String realiseDate)
-    {
-        this.originalTitle = originalTitle;
-        this.thumbnail = "http://image.tmdb.org/t/p/w185/"+thumbnail;
-        this.synopsis = synopsis;
-        this.rating = Double.valueOf(rating);
-        this.realiseDate = realiseDate;
+    public String getPosterPath() {
+        return posterPath;
     }
 
-    public double getRating() {
-        return rating;
+    public void setPosterPath(String posterPath) {
+        this.posterPath = posterPath;
     }
 
-    public void setRating(double rating) {
-        this.rating = rating;
+    public Boolean getAdult() {
+        return adult;
     }
 
-    public String getSynopsis() {
-        return synopsis;
+    public void setAdult(Boolean adult) {
+        this.adult = adult;
     }
 
-    public void setSynopsis(String synopsis) {
-        this.synopsis = synopsis;
+    public String getOverview() {
+        return overview;
     }
 
-    public String getThumbnail() {
-        return thumbnail;
+    public void setOverview(String overview) {
+        this.overview = overview;
     }
 
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+    public List<Integer> getGenreIds() {
+        return genreIds;
+    }
+
+    public void setGenreIds(List<Integer> genreIds) {
+        this.genreIds = genreIds;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getOriginalTitle() {
@@ -54,15 +79,80 @@ public class Movie implements Serializable {
         this.originalTitle = originalTitle;
     }
 
-    public String getRealiseDate() {
-        return realiseDate;
+    public String getOriginalLanguage() {
+        return originalLanguage;
     }
 
-    public void setRealiseDate(String realiseDate) {
-        this.realiseDate = realiseDate;
+    public void setOriginalLanguage(String originalLanguage) {
+        this.originalLanguage = originalLanguage;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getBackdropPath() {
+        return backdropPath;
+    }
+
+    public void setBackdropPath(String backdropPath) {
+        this.backdropPath = backdropPath;
+    }
+
+    public Double getPopularity() {
+        return popularity;
+    }
+
+    public void setPopularity(Double popularity) {
+        this.popularity = popularity;
+    }
+
+    public Integer getVoteCount() {
+        return voteCount;
+    }
+
+    public void setVoteCount(Integer voteCount) {
+        this.voteCount = voteCount;
+    }
+
+    public Boolean getVideo() {
+        return video;
+    }
+
+    public void setVideo(Boolean video) {
+        this.video = video;
+    }
+
+    public Double getVoteAverage() {
+        return voteAverage;
+    }
+
+    public void setVoteAverage(Double voteAverage) {
+        this.voteAverage = voteAverage;
     }
 
 
 
-
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "posterPath='" + posterPath + '\'' +
+                ", adult=" + adult +
+                ", overview='" + overview + '\'' +
+                ", releaseDate='" + releaseDate + '\'' +
+                ", id=" + id +
+                ", originalTitle='" + originalTitle + '\'' +
+                ", originalLanguage='" + originalLanguage + '\'' +
+                ", title='" + title + '\'' +
+                ", backdropPath='" + backdropPath + '\'' +
+                ", popularity=" + popularity +
+                ", voteCount=" + voteCount +
+                ", video=" + video +
+                ", voteAverage=" + voteAverage +
+                '}';
+    }
 }
