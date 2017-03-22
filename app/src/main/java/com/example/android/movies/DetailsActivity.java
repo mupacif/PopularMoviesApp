@@ -2,6 +2,7 @@ package com.example.android.movies;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -63,10 +64,19 @@ public class DetailsActivity extends AppCompatActivity {
 
     public void inflateMovie(Movie movie)
     {
-        title.setText(movie.getOriginalTitle());
+        String favourited = checkIfFavourite()?"[Favourited]":"";
+        title.setText(movie.getOriginalTitle()+favourited);
         releaseDate.setText(movie.getReleaseDate());
         avgVote.setText(String.valueOf(movie.getVoteAverage()));
         synopsis.setText(movie.getOverview());
         Picasso.with(poster.getContext()).load(buildSmallImageUrl(movie.getPosterPath()).toString()).centerCrop().fit().into(poster);
+    }
+
+    public boolean checkIfFavourite()
+    {
+        Uri toMovie = MovieContract.BASE_CONTENT_URI.buildUpon().appendPath(movie.getId().toString()).build();
+        Cursor datas = getContentResolver().query(toMovie,null,null,null,null);
+
+        return datas.getCount()>0;
     }
 }
