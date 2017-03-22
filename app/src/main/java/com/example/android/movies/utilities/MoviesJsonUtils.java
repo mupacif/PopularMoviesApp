@@ -4,9 +4,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * Created by mupac_000 on 07-02-17.
- */
 
 public final class MoviesJsonUtils {
 

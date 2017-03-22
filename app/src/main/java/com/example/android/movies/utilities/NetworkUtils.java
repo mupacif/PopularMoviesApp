@@ -15,11 +15,15 @@ import java.util.Scanner;
 public class NetworkUtils {
 
 
-    final static String BASE_URL_POPULAR=
-            "http://api.themoviedb.org/3/movie/popular";
+    final static String BASE_URL =
+            "http://api.themoviedb.org/3/movie/";
 
-    final static String BASE_URL_TOPRATED=
-            "http://api.themoviedb.org/3/movie/top_rated";
+    final static String BASE_URL_POPULAR = BASE_URL + "popular";
+
+    final static String BASE_URL_TOPRATED = BASE_URL + "top_rated";
+
+    final static String TRAILERS_PATH = "videos";
+    final static String REVIEWS_PATH = "reviews";
 
     final static String APP_KEY_PARAM = "api_key";
 
@@ -31,7 +35,7 @@ public class NetworkUtils {
 
 
     public static URL buildUrl(boolean isPopular) {
-        Uri builtUri = Uri.parse(isPopular?BASE_URL_POPULAR:BASE_URL_TOPRATED).buildUpon()
+        Uri builtUri = Uri.parse(isPopular ? BASE_URL_POPULAR : BASE_URL_TOPRATED).buildUpon()
                 .appendQueryParameter(APP_KEY_PARAM, APP_KEY)
                 .build();
 
@@ -42,6 +46,37 @@ public class NetworkUtils {
             e.printStackTrace();
         }
 
+        return url;
+    }
+
+    public static URL getTrailersUrl(long id) {
+        Uri builtUri = Uri.parse(BASE_URL).buildUpon().appendPath(String.valueOf(id)).appendPath(TRAILERS_PATH).build();
+
+        URL url = null;
+
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return url;
+    }
+
+
+
+    public static URL getReviewsUrl(long id) {
+        Uri builtUri = Uri.parse(BASE_URL)
+                .buildUpon()
+                .appendPath(String.valueOf(id))
+                .appendPath(REVIEWS_PATH).build();
+
+        URL url = null;
+
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
         return url;
     }
 
