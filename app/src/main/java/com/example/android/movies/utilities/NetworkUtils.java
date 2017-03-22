@@ -34,6 +34,11 @@ public class NetworkUtils {
     public final static String APP_KEY = "";
 
 
+    /**
+     * Build a url to get popular movies or top rated
+     * @param isPopular if true returns popular movies url, if false return top rated url
+     * @return most popular or top rated url
+     */
     public static URL buildUrl(boolean isPopular) {
         Uri builtUri = Uri.parse(isPopular ? BASE_URL_POPULAR : BASE_URL_TOPRATED).buildUpon()
                 .appendQueryParameter(APP_KEY_PARAM, APP_KEY)
@@ -49,6 +54,11 @@ public class NetworkUtils {
         return url;
     }
 
+    /**
+     * build a trailes url based on movie id
+     * @param id of movie
+     * @return url to movie trailers list
+     */
     public static URL getTrailersUrl(long id) {
         Uri builtUri = Uri.parse(BASE_URL).buildUpon().appendPath(String.valueOf(id)).appendPath(TRAILERS_PATH).build();
 
@@ -63,7 +73,11 @@ public class NetworkUtils {
     }
 
 
-
+    /**
+     * Returns url of reviews comments
+     * @param id of movie
+     * @return url to reviews list
+     */
     public static URL getReviewsUrl(long id) {
         Uri builtUri = Uri.parse(BASE_URL)
                 .buildUpon()
