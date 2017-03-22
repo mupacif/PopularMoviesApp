@@ -1,6 +1,7 @@
 package com.example.android.movies.utilities;
 
 import android.net.Uri;
+import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,6 +23,7 @@ public class NetworkUtils {
 
     final static String BASE_URL_TOPRATED = BASE_URL + "top_rated";
 
+
     final static String TRAILERS_PATH = "videos";
     final static String REVIEWS_PATH = "reviews";
 
@@ -31,7 +33,7 @@ public class NetworkUtils {
     public final static String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/";
     public final static String IMAGE_QUERY_SIZE = "size";
     public final static String IMAGE_SMALL_SIZE = "w185";
-    public final static String APP_KEY = "";
+    public final static String APP_KEY = "4b6de28efdf9617b837f66cc9b7dd021";
 
 
     /**
@@ -51,6 +53,7 @@ public class NetworkUtils {
             e.printStackTrace();
         }
 
+        Log.i("NetworkUtils",url.toString());
         return url;
     }
 
