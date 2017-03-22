@@ -3,7 +3,9 @@ package com.example.android.movies.utilities;
 import android.util.Log;
 
 import com.example.android.movies.domain.Movie;
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,7 +23,9 @@ public final class MoviesJsonUtils {
         String resultJson = jsonData.getString(JSON_GLOBAL_WRAPPER);
 
         Log.i("MovieJsonUtils", resultJson);
-        Gson gson = new Gson();
+        Gson gson =  gson = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .create();
         Movie[] movies = gson.fromJson(resultJson,Movie[].class);
 
        /* JSONArray moviesArray = jsonData.getJSONArray(JSON_GLOBAL_WRAPPER);

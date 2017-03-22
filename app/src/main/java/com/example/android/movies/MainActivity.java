@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.android.movies.domain.Movie;
@@ -22,6 +24,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
 
 import static com.example.android.movies.utilities.MoviesJsonUtils.getSimpleMovieFromJson;
 
@@ -49,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this,2));
 
+        recyclerView.setItemAnimator(new SlideInUpAnimator());
+
 
     }
 
@@ -68,6 +74,16 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         URL theMovieDBUrl = NetworkUtils.buildUrl(isPopular);
         MovieDbAsyncTaskLoader asyncLoader = new MovieDbAsyncTaskLoader();
         asyncLoader.setCallback(new MovieDbAsyncTaskLoader.AsyncTaskCallback() {
+            @Override
+            public void initProgressBar() {
+                findViewById(R.id.pb_main_progressBar).setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void killProgressBar() {
+                findViewById(R.id.pb_main_progressBar).setVisibility(View.GONE);
+            }
+
             @Override
             public void getJson(String jsonData) {
                 try {

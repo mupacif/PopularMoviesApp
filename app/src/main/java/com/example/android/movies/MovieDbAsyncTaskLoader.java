@@ -20,6 +20,8 @@ public class MovieDbAsyncTaskLoader extends AsyncTask<URL, Void, String> {
     private AsyncTaskCallback callback;
     public interface AsyncTaskCallback
     {
+        public void initProgressBar();
+        public void killProgressBar();
         public void getJson(String jsonData);
     }
 
@@ -29,6 +31,12 @@ public class MovieDbAsyncTaskLoader extends AsyncTask<URL, Void, String> {
     public void setCallback(AsyncTaskCallback callback)
     {
         this.callback = callback;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        callback.initProgressBar();
     }
 
     @Override
@@ -46,6 +54,7 @@ public class MovieDbAsyncTaskLoader extends AsyncTask<URL, Void, String> {
 
     @Override
     protected void onPostExecute(String moviesJsonData) {
-       callback.getJson(moviesJsonData);
+       callback.killProgressBar();
+        callback.getJson(moviesJsonData);
     }
 }

@@ -61,7 +61,7 @@ public class NetworkUtils {
     {
         Uri builtUri = Uri.parse(IMAGE_BASE_URL).buildUpon()
                 .appendPath(IMAGE_SMALL_SIZE)
-                .appendPath(pathToImage)
+                .appendPath(pathToImage.substring(1))
                 .build();
 
         URL url = null;
