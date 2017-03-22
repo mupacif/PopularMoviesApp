@@ -28,7 +28,7 @@ public class MovieContract {
 
         public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME
                 + "(" + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + COL_IDLIKEDMOVIE + " TEXT NOT NULL"
+                + COL_IDLIKEDMOVIE + " INTEGER NOT NULL"
                 + ")";
 
 

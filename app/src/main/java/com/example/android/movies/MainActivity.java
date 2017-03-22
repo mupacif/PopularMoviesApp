@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import jp.wasabeef.recyclerview.animators.SlideInUpAnimator;
+
 
 import static com.example.android.movies.utilities.MoviesJsonUtils.getSimpleMovieFromJson;
 
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this,2));
 
-        recyclerView.setItemAnimator(new SlideInUpAnimator());
+
 
 
     }

@@ -1,11 +1,17 @@
 package com.example.android.movies;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.android.movies.database.MovieContract;
 import com.example.android.movies.domain.Movie;
 import com.squareup.picasso.Picasso;
 
@@ -20,6 +26,8 @@ public class DetailsActivity extends AppCompatActivity {
     private TextView avgVote;
     private TextView synopsis;
     private ImageView poster;
+    private FloatingActionButton addFav;
+    Movie movie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +40,24 @@ public class DetailsActivity extends AppCompatActivity {
         synopsis = (TextView) findViewById(R.id.details_synopsis);
         poster = (ImageView) findViewById(R.id.details_image);
 
+        addFav = (FloatingActionButton)findViewById(R.id.fab_details_addFav);
+        addFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                ContentValues cv = new ContentValues();
+                cv.put(MovieContract.MovieEntry.COL_IDLIKEDMOVIE,movie.getId());
+                Uri inserted = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI,cv);
+                if(inserted!=null)
+                {
+                    Toast.makeText(DetailsActivity.this,"added to favorites", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
 
         Intent intent = getIntent();
-        Movie movie = (Movie)intent.getSerializableExtra("movie");
+        movie = (Movie)intent.getSerializableExtra("movie");
         inflateMovie(movie);
     }
 
