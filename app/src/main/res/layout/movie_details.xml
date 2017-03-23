@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        tools:text="Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/details_Title"
+        android:padding="10dp"
+        app:layout_constraintTop_toTopOf="@+id/details_image"
+        android:layout_marginStart="8dp"
+        app:layout_constraintLeft_toRightOf="@+id/details_image"
+        android:layout_marginLeft="8dp" />
+
+    <TextView
+        tools:text="releaseDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/details_releaseDate"
+        app:layout_constraintTop_toTopOf="@+id/details_image"
+        android:layout_marginTop="72dp"
+        app:layout_constraintLeft_toLeftOf="@+id/details_Title" />
+
+    <TextView
+        tools:text="avg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/details_avgVote"
+        app:layout_constraintTop_toBottomOf="@+id/details_Title"
+        app:layout_constraintBottom_toTopOf="@+id/details_releaseDate"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintLeft_toRightOf="@+id/details_image"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageView
+        android:layout_width="140dp"
+        android:layout_height="200dp"
+        app:srcCompat="@android:drawable/alert_dark_frame"
+        android:id="@+id/details_image"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="16dp"
+        android:adjustViewBounds="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="24dp" />
+
+</android.support.constraint.ConstraintLayout>

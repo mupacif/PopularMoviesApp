@@ -4,13 +4,10 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-/**
- * Created by student on 21-03-17.
- */
 
 public class MovieDbHelper extends SQLiteOpenHelper {
-    public static final String DB_NAME = "Result.db";
-    public static final int DB_VERSION = 3;
+    public static final String DB_NAME = "Movie.db";
+    public static final int DB_VERSION = 4;
 
     public MovieDbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
