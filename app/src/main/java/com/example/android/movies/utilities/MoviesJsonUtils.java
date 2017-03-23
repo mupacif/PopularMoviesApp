@@ -18,6 +18,9 @@ public final class MoviesJsonUtils {
 
     public static Movie[] getSimpleMovieFromJson(String jsonStr) throws JSONException {
 
+        if(jsonStr==null)
+            throw new JSONException("no connection");
+
         String[][] parsedMovieData;
         JSONObject jsonData = new JSONObject(jsonStr);
         String resultJson = jsonData.getString(JSON_GLOBAL_WRAPPER);

@@ -103,6 +103,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     }
 
+    public void changeData(List<Movie> movies)
+    {
+        this.movies = movies;
+        this.notifyDataSetChanged();
+        Log.i("yep","data changed?");
+    }
+
 
 
 

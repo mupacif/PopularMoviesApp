@@ -23,6 +23,18 @@ public class Movie implements Serializable {
     private boolean video;
     private double voteAverage;
 
+    public Movie()
+    {}
+    public Movie(String posterPath, String overview, String releaseDate, int id, String originalTitle, String backdropPath, double voteAverage) {
+        this.posterPath = posterPath;
+        this.overview = overview;
+        this.releaseDate = releaseDate;
+        this.id = id;
+        this.originalTitle = originalTitle;
+        this.backdropPath = backdropPath;
+        this.voteAverage = voteAverage;
+    }
+
     public String getPosterPath() {
         return posterPath;
     }
@@ -34,6 +46,7 @@ public class Movie implements Serializable {
     public Boolean getAdult() {
         return adult;
     }
+
 
     public void setAdult(Boolean adult) {
         this.adult = adult;
