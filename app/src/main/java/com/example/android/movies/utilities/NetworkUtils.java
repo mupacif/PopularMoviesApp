@@ -36,6 +36,8 @@ public class NetworkUtils {
     public final static String APP_KEY = "4b6de28efdf9617b837f66cc9b7dd021";
 
 
+
+
     /**
      * Build a url to get popular movies or top rated
      * @param isPopular if true returns popular movies url, if false return top rated url

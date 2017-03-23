@@ -16,6 +16,11 @@ import com.example.android.movies.database.MovieContract;
 import com.example.android.movies.domain.Movie;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+
+import java.util.Arrays;
+
+import static com.example.android.movies.utilities.MoviesJsonUtils.getSimpleMovieFromJson;
 import static com.example.android.movies.utilities.NetworkUtils.buildSmallImageUrl;
 
 public class DetailsActivity extends AppCompatActivity {
@@ -77,6 +82,60 @@ public class DetailsActivity extends AppCompatActivity {
         inflateMovie(movie);
     }
 
+    public void LoadMovies() {
+        MovieDbAsyncTaskLoader asyncLoader = new MovieDbAsyncTaskLoader();
+        asyncLoader.setCallback(new MovieDbAsyncTaskLoader.AsyncTaskCallback() {
+            @Override
+            public void initProgressBar() {
+                findViewById(R.id.pb_main_progressBar).setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void killProgressBar() {
+                findViewById(R.id.pb_main_progressBar).setVisibility(View.GONE);
+            }
+
+            @Override
+            public void getJson(String jsonData) {
+                try {
+                    movies = Arrays.asList(getSimpleMovieFromJson(jsonData));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+        asyncLoader.execute(theMovieDBUrl);
+
+    }
+    public void LoadReviews() {
+        MovieDbAsyncTaskLoader asyncLoader = new MovieDbAsyncTaskLoader();
+        asyncLoader.setCallback(new MovieDbAsyncTaskLoader.AsyncTaskCallback() {
+            @Override
+            public void initProgressBar() {
+                findViewById(R.id.pb_main_progressBar).setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void killProgressBar() {
+                findViewById(R.id.pb_main_progressBar).setVisibility(View.GONE);
+            }
+
+            @Override
+            public void getJson(String jsonData) {
+                try {
+                    movies = Arrays.asList(getSimpleMovieFromJson(jsonData));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+        asyncLoader.execute(theMovieDBUrl);
+
+    }
     private boolean insertMovie()
     {
         ContentValues cv = new ContentValues();
