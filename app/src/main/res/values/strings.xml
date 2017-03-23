@@ -9,5 +9,6 @@
     <string name="detail_title">Title:</string>
     <string name="detail_releaseDate">Release Date:</string>
     <string name="detail_averageVote">Average vote:</string>
+    <string name="favourites">favourites</string>
 
 </resources>

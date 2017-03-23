@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
 
 
         recyclerView.setAdapter(new MovieAdapter(movies,this));
-        Log.d("MainActivity","**gogo powa ranga**");
+
 
     }
 
@@ -162,11 +162,18 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
             case R.id.action_rated:
                 sortMostRated();
                 return true;
+            case R.id.action_favourites:
+                sortMostRated();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    public void sortFavourtes()
+    {
+        
+    }
     /**
      * Get the index of items then send related movie to details
      * @param clickedItemIndex

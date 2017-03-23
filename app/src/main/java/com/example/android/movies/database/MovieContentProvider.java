@@ -60,7 +60,7 @@ public class MovieContentProvider extends ContentProvider {
                 break;
             case MOVIES_WITH_ID:
                 String id = uri.getPathSegments().get(1);
-                String mSelection = "_id=?";
+                String mSelection = MovieContract.MovieEntry.COL_ID +"=?";
                 String[] mSelectionArgs = new String[]{id};
 
 
@@ -125,7 +125,9 @@ public class MovieContentProvider extends ContentProvider {
             case MOVIES_WITH_ID:
                 String id = uri.getPathSegments().get(1);
 
-                deletedMovies = db.delete(TABLE_NAME,"id=?",new String[]{id});
+                String mSelection = MovieContract.MovieEntry.COL_ID +"=?";
+                String[] mSelectionArgs = new String[]{id};
+                deletedMovies = db.delete(TABLE_NAME,mSelection,mSelectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("unknown uri :"+uri);

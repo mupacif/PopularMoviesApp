@@ -29,6 +29,7 @@ public class DetailsActivity extends AppCompatActivity {
     private ImageView poster;
     private FloatingActionButton addFav;
     Movie movie;
+    boolean isFavourite;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +47,26 @@ public class DetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                ContentValues cv = new ContentValues();
-                cv.put(MovieContract.MovieEntry.COL_IDLIKEDMOVIE,movie.getId());
-                Uri inserted = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI,cv);
-                if(inserted!=null)
+
+                if(!isFavourite) {
+                     if (insertMovie()) {
+                        Toast.makeText(DetailsActivity.this, "added to favorites", Toast.LENGTH_SHORT).show();
+                        addFav.setImageResource(android.R.drawable.btn_star_big_on);
+                        isFavourite=true;
+                    }
+
+                }
+                else
                 {
-                    Toast.makeText(DetailsActivity.this,"added to favorites", Toast.LENGTH_SHORT).show();
+
+                    Uri toMovie = MovieContract.MovieEntry.CONTENT_URI.buildUpon().appendPath(movie.getId().toString()).build();
+                    int deleted= getContentResolver().delete(toMovie, null,null);
+                    if (deleted > 0) {
+                        Toast.makeText(DetailsActivity.this, "removed from favorites", Toast.LENGTH_SHORT).show();
+                        addFav.setImageResource(android.R.drawable.btn_star_big_off);
+                        isFavourite=false;
+                    }
+
                 }
 
             }
@@ -62,10 +77,32 @@ public class DetailsActivity extends AppCompatActivity {
         inflateMovie(movie);
     }
 
+    private boolean insertMovie()
+    {
+        ContentValues cv = new ContentValues();
+        cv.put(MovieContract.MovieEntry.COL_ID, movie.getId());
+        cv.put(MovieContract.MovieEntry.COL_POSTERPATH, movie.getPosterPath());
+        cv.put(MovieContract.MovieEntry.COL_OVERVIEW, movie.getOverview());
+        cv.put(MovieContract.MovieEntry.COL_RELEASEDATE, movie.getReleaseDate());
+        cv.put(MovieContract.MovieEntry.COL_ORIGINALTITLE, movie.getOriginalTitle());
+        cv.put(MovieContract.MovieEntry.COL_VOTEAVERAGE, movie.getVoteAverage());
+        cv.put(MovieContract.MovieEntry.COL_BACKDROPPATH, movie.getBackdropPath());
+        Uri inserted = getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, cv);
+        if (inserted != null) {
+            return true;
+        }
+        return false;
+    }
     public void inflateMovie(Movie movie)
     {
-        String favourited = checkIfFavourite()?"[Favourited]":"";
-        title.setText(movie.getOriginalTitle()+favourited);
+        isFavourite = checkIfFavourite();
+
+        if(isFavourite)
+            addFav.setImageResource(android.R.drawable.btn_star_big_on);
+        else
+            addFav.setImageResource(android.R.drawable.btn_star_big_off);
+
+        title.setText(movie.getOriginalTitle());
         releaseDate.setText(movie.getReleaseDate());
         avgVote.setText(String.valueOf(movie.getVoteAverage()));
         synopsis.setText(movie.getOverview());
@@ -74,7 +111,7 @@ public class DetailsActivity extends AppCompatActivity {
 
     public boolean checkIfFavourite()
     {
-        Uri toMovie = MovieContract.BASE_CONTENT_URI.buildUpon().appendPath(movie.getId().toString()).build();
+        Uri toMovie = MovieContract.MovieEntry.CONTENT_URI.buildUpon().appendPath(movie.getId().toString()).build();
         Cursor datas = getContentResolver().query(toMovie,null,null,null,null);
 
         return datas.getCount()>0;
