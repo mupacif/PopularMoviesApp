@@ -16,7 +16,8 @@
         app:layout_constraintTop_toTopOf="@+id/details_image"
         android:layout_marginStart="8dp"
         app:layout_constraintLeft_toRightOf="@+id/details_image"
-        android:layout_marginLeft="8dp" />
+        android:layout_marginLeft="8dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
     <TextView
         tools:text="releaseDate"

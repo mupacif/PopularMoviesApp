@@ -1,6 +1,7 @@
 package com.example.android.movies;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -41,53 +42,61 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     Toast toast;
     private boolean localDatabase;
 
-    private Boolean isPopular;
+    private boolean isPopular;
+    private boolean isLandscape;
     private TextView topSettingTv;
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.i(TAG,"onCreate");
+        Log.i(TAG, "onCreate");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        topSettingTv = (TextView)findViewById(R.id.tv_main_topSetting);
+        topSettingTv = (TextView) findViewById(R.id.tv_main_topSetting);
         toast = new Toast(getApplicationContext());
 
         isPopular = true;
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        if(savedInstanceState!=null)
-        {
-            localDatabase = savedInstanceState.getBoolean(FAVOURITE_KEY,false);
-            isPopular = savedInstanceState.getBoolean(POPULAR_KEY,true);
-            if(localDatabase) {
+
+        if (savedInstanceState != null) {
+            localDatabase = savedInstanceState.getBoolean(FAVOURITE_KEY, false);
+            isPopular = savedInstanceState.getBoolean(POPULAR_KEY, true);
+            if (localDatabase) {
                 sortFavourites();
                 topSettingTv.setText(FAVOURITE_KEY);
             } else {
-                Log.i(TAG,"Network searching");
+                Log.i(TAG, "Network searching");
                 movieQuery(isPopular);
             }
-        }
-        else{
+        } else {
             movieQuery(isPopular);
         }
 
 
+    }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        this.isLandscape = newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE;
+        Log.v(TAG, "Orientation changed");
+
+        movieAdapter.notifyDataSetChanged();
 
     }
 
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
 
-        Log.i(TAG,"onSaveInstanceState");
-        savedInstanceState.putBoolean(FAVOURITE_KEY,localDatabase);
-        savedInstanceState.putBoolean(POPULAR_KEY,isPopular);
+        Log.i(TAG, "onSaveInstanceState");
+        savedInstanceState.putBoolean(FAVOURITE_KEY, localDatabase);
+        savedInstanceState.putBoolean(POPULAR_KEY, isPopular);
 
         super.onSaveInstanceState(savedInstanceState);
     }
@@ -102,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
      * Load json data from Server
      */
     private void movieQuery(boolean isPopular) {
-        topSettingTv.setText(isPopular?POPULAR_KEY:TOP_RATED_KEY);
+        topSettingTv.setText(isPopular ? POPULAR_KEY : TOP_RATED_KEY);
         URL theMovieDBUrl = NetworkUtils.buildUrl(isPopular);
         MovieDbAsyncTaskLoader asyncLoader = new MovieDbAsyncTaskLoader();
         asyncLoader.setCallback(new MovieDbAsyncTaskLoader.AsyncTaskCallback() {
@@ -138,8 +147,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
      */
     public void setRecyclerAdapter(List<Movie> movies) {
 
-            movieAdapter = new MovieAdapter(movies, this);
-            recyclerView.setAdapter(new MovieAdapter(movies, this));
+        movieAdapter = new MovieAdapter(movies, this);
+        recyclerView.setAdapter(new MovieAdapter(movies, this));
     }
 
     @Override
@@ -174,9 +183,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
 
     @Override
     protected void onResume() {
-        Log.i(TAG,"onResume");
+        Log.i(TAG, "onResume");
         super.onResume();
-        if(localDatabase) {
+        if (localDatabase) {
             sortFavourites();
         }
     }
@@ -184,14 +193,14 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i(TAG,"onStart");
+        Log.i(TAG, "onStart");
     }
 
 
     @Override
     protected void onRestart() {
         super.onStart();
-        Log.i(TAG,"onRestart");
+        Log.i(TAG, "onRestart");
     }
 
     /**
@@ -204,15 +213,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_popular:
-                localDatabase=false;
+                localDatabase = false;
                 sortMostPopular();
                 return true;
             case R.id.action_rated:
-                localDatabase=false;
+                localDatabase = false;
                 sortMostRated();
                 return true;
             case R.id.action_favourites:
-                localDatabase=true;
+                localDatabase = true;
                 sortFavourites();
                 return true;
         }
@@ -223,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     public void sortFavourites() {
         topSettingTv.setText(FAVOURITE_KEY);
         Cursor c = getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI, null, null, null, null);
-        List<Movie> moviesSqlite=new ArrayList<>();
+        List<Movie> moviesSqlite = new ArrayList<>();
         while (c.moveToNext()) {
             moviesSqlite.add(getMoviebyCursor(c));
         }
@@ -255,6 +264,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
 
         goToDetails(clickedItemIndex);
 
+    }
+
+    @Override
+    public boolean isLandscape() {
+        return isLandscape;
     }
 
     /**

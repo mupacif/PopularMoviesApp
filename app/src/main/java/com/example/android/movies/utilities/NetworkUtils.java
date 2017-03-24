@@ -33,6 +33,7 @@ public class NetworkUtils {
     public final static String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/";
     public final static String IMAGE_QUERY_SIZE = "size";
     public final static String IMAGE_SMALL_SIZE = "w185";
+    public final static String IMAGE_MEDIUM_SIZE = "w300";
     public final static String IMAGE_BIG_SIZE = "w780";
     public final static String APP_KEY = "4b6de28efdf9617b837f66cc9b7dd021";
 
@@ -64,6 +65,23 @@ public class NetworkUtils {
     {
         Uri builtUri = Uri.parse(IMAGE_BASE_URL).buildUpon()
                 .appendPath(IMAGE_SMALL_SIZE)
+                .appendPath(pathToImage.substring(1))
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        Log.i("Network",url.toString());
+        return url;
+    }
+    public static URL buildMediumImageUrl(String pathToImage)
+    {
+        Uri builtUri = Uri.parse(IMAGE_BASE_URL).buildUpon()
+                .appendPath(IMAGE_MEDIUM_SIZE)
                 .appendPath(pathToImage.substring(1))
                 .build();
 

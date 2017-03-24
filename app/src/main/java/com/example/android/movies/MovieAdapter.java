@@ -12,6 +12,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import static com.example.android.movies.utilities.NetworkUtils.buildMediumImageUrl;
 import static com.example.android.movies.utilities.NetworkUtils.buildSmallImageUrl;
 
 
@@ -21,6 +22,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
 
     public interface ListItemClickListener {
         void onListItemClick(int clickedItemIndex);
+        boolean isLandscape();
     }
 
 
@@ -89,7 +91,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             public void bind(Movie movie)
             {
                 Log.i("Adapter", movie.toString());
-                Picasso.with(moviePoster.getContext()).load(buildSmallImageUrl(movie.getPosterPath()).toString()).centerCrop().fit().into(moviePoster);
+
+                String urlToPosterPath=movie.getPosterPath();
+                String urlToPicture = mOnClickListener.isLandscape()?
+                  buildMediumImageUrl(urlToPosterPath).toString():
+                        buildSmallImageUrl(urlToPosterPath).toString();
+                Picasso.with(moviePoster.getContext()).load(urlToPicture).centerCrop().fit().into(moviePoster);
 
             }
 
