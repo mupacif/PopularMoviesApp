@@ -16,15 +16,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- Les CardView agissent comme des FrameLayout,
-         pour avoir une organisation verticale nous devons
-         donc rajouter un LinearLayout -->
-
         <ImageView
             android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:scaleType="centerCrop" />
+            android:scaleType="fitCenter" />
 
     </LinearLayout>
 

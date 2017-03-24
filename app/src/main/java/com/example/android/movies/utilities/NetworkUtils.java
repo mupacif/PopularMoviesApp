@@ -33,6 +33,7 @@ public class NetworkUtils {
     public final static String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/";
     public final static String IMAGE_QUERY_SIZE = "size";
     public final static String IMAGE_SMALL_SIZE = "w185";
+    public final static String IMAGE_BIG_SIZE = "w780";
     public final static String APP_KEY = "4b6de28efdf9617b837f66cc9b7dd021";
 
 
@@ -77,13 +78,36 @@ public class NetworkUtils {
         return url;
     }
 
+    public static URL buildBigImageUrl(String pathToImage)
+    {
+        Uri builtUri = Uri.parse(IMAGE_BASE_URL).buildUpon()
+                .appendPath(IMAGE_BIG_SIZE)
+                .appendPath(pathToImage.substring(1))
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        Log.i("Network",url.toString());
+        return url;
+    }
+
     /**
      * build a trailes url based on movie id
      * @param id of movie
      * @return url to movie trailers list
      */
-    public static URL getTrailersUrl(long id) {
-        Uri builtUri = Uri.parse(BASE_URL).buildUpon().appendPath(String.valueOf(id)).appendPath(TRAILERS_PATH).build();
+    public static URL buildTrailersUrl(long id) {
+        Uri builtUri = Uri.parse(BASE_URL)
+                .buildUpon()
+                .appendPath(String.valueOf(id))
+                .appendPath(TRAILERS_PATH)
+                .appendQueryParameter(APP_KEY_PARAM, APP_KEY)
+                .build();
 
         URL url = null;
 
@@ -101,11 +125,13 @@ public class NetworkUtils {
      * @param id of movie
      * @return url to reviews list
      */
-    public static URL getReviewsUrl(long id) {
+    public static URL buildReviewsUrl(long id) {
         Uri builtUri = Uri.parse(BASE_URL)
                 .buildUpon()
                 .appendPath(String.valueOf(id))
-                .appendPath(REVIEWS_PATH).build();
+                .appendPath(REVIEWS_PATH)
+                .appendQueryParameter(APP_KEY_PARAM, APP_KEY)
+                .build();
 
         URL url = null;
 

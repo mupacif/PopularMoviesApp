@@ -3,15 +3,15 @@ package com.example.android.movies;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.movies.database.MovieContract;
@@ -26,12 +26,13 @@ import java.util.Arrays;
 import java.util.List;
 
 
-import static com.example.android.movies.utilities.MoviesJsonUtils.getSimpleMovieFromJson;
+import static com.example.android.movies.utilities.MoviesJsonUtils.getMoviesFromJson;
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.ListItemClickListener {
 
-    public static final String FAVOURITE_KEY = "Favourite";
+    public static final String FAVOURITE_KEY = "Favourites";
     public static final String POPULAR_KEY = "Popular";
+    public static final String TOP_RATED_KEY = "Top Rated";
 
     public static final String TAG = "MainActivity";
     private RecyclerView recyclerView;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     private boolean localDatabase;
 
     private Boolean isPopular;
+    private TextView topSettingTv;
 
 
 
@@ -49,6 +51,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.i(TAG,"onCreate");
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        topSettingTv = (TextView)findViewById(R.id.tv_main_topSetting);
         toast = new Toast(getApplicationContext());
 
         isPopular = true;
@@ -60,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
             isPopular = savedInstanceState.getBoolean(POPULAR_KEY,true);
             if(localDatabase) {
                 sortFavourites();
+                topSettingTv.setText(FAVOURITE_KEY);
             } else {
                 Log.i(TAG,"Network searching");
                 movieQuery(isPopular);
@@ -94,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
      * Load json data from Server
      */
     private void movieQuery(boolean isPopular) {
+        topSettingTv.setText(isPopular?POPULAR_KEY:TOP_RATED_KEY);
         URL theMovieDBUrl = NetworkUtils.buildUrl(isPopular);
         MovieDbAsyncTaskLoader asyncLoader = new MovieDbAsyncTaskLoader();
         asyncLoader.setCallback(new MovieDbAsyncTaskLoader.AsyncTaskCallback() {
@@ -110,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
             @Override
             public void getJson(String jsonData) {
                 try {
-                    movies = Arrays.asList(getSimpleMovieFromJson(jsonData));
+                    movies = Arrays.asList(getMoviesFromJson(jsonData));
                     setRecyclerAdapter(movies);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -212,6 +221,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     }
 
     public void sortFavourites() {
+        topSettingTv.setText(FAVOURITE_KEY);
         Cursor c = getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI, null, null, null, null);
         List<Movie> moviesSqlite=new ArrayList<>();
         while (c.moveToNext()) {
@@ -224,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     public Movie getMoviebyCursor(Cursor c) {
         String posterPath = c.getString(c.getColumnIndex(MovieContract.MovieEntry.COL_POSTERPATH));
         String overview = c.getString(c.getColumnIndex(MovieContract.MovieEntry.COL_OVERVIEW));
-        String releaseDate = c.getColumnName(c.getColumnIndex(MovieContract.MovieEntry.COL_RELEASEDATE));
+        String releaseDate = c.getString(c.getColumnIndex(MovieContract.MovieEntry.COL_RELEASEDATE));
         int id = c.getInt(c.getColumnIndex(MovieContract.MovieEntry.COL_ID));
         String originalTitle = c.getString(c.getColumnIndex(MovieContract.MovieEntry.COL_ORIGINALTITLE));
         String backdropPath = c.getString(c.getColumnIndex(MovieContract.MovieEntry.COL_BACKDROPPATH));
